@@ -62,10 +62,9 @@ class Timetable:
         self._temp_now = temp_time
         return day_tasks
 
-
     def _parse_data(self):
-        self._timetable = []
+        self.timetable = []
 
         for i in range(7):
             curr_day = self._get_day_after_day(self.now, i)
-            self._timetable.append((curr_day, self._parse_day(curr_day, self._days[curr_day.strftime("%A")])))
+            self.timetable.append((curr_day, self._parse_day(curr_day, self._days[curr_day.strftime("%A")])))
