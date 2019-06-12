@@ -12,13 +12,21 @@ class Timetable:
         self._normalize_data()
         self._parse_data()
 
+    def __str__(self):
+        result = ""
+        for day in self.timetable:
+            result += (day[0].strftime("%A") + " " + day[0].strftime("%Y-%m-%d") + "\n")
+            for task in day[1]:
+                result += ("\t " + task[0] + " " + ("{:d}:{:02d}".format(task[1].hour, task[1].minute)) + " \n")
+
+        return result
+
     def _read_data(self):
         with open(self.filename, 'r') as f:
             data = json.load(f)
 
             self._start_time = data["start_time"]
             self._diff = data["diff_time"]
-            self._finish_time = data["finish_time"]
             self._days = data["days"]
 
     def _get_day_after_day(self, d, n):
@@ -70,11 +78,11 @@ class Timetable:
             curr_day = self._get_day_after_day(self.now, i)
             self.timetable.append((curr_day, self._parse_day(self._days[curr_day.strftime("%A")])))
 
-    def __str__(self):
-        result = ""
-        for day in self.timetable:
-            result += (day[0].strftime("%A") + " " + day[0].strftime("%Y-%m-%d") + "\n")
-            for task in day[1]:
-                result += ("\t " + task[0] + " " + ("{:d}:{:02d}".format(task[1].hour, task[1].minute)) + " \n")
-
+    def get_curr_day_task(self):
+        now = datetime.now()
+        result = None
+        for day_task in self.timetable:
+            date = day_task[0]
+            if now.strftime("%Y-%m-%d") == date.strftime("%Y-%m-%d"):
+                result = day_task
         return result
