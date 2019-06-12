@@ -86,3 +86,15 @@ class Timetable:
             if now.strftime("%Y-%m-%d") == date.strftime("%Y-%m-%d"):
                 result = day_task
         return result
+
+    def get_curr_task(self):
+        current_tasks = self.get_curr_day_task()[1]
+        now = datetime.now()
+        result = None
+
+        for i in range(len(current_tasks) - 1):
+            prev = current_tasks[i][1]
+            curr = current_tasks[i + 1][1]
+            if prev < now < curr:
+               result = current_tasks[i]
+        return result
