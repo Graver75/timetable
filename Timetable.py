@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+
 class Timetable:
     def __init__(self, filename):
         self.filename = filename
@@ -45,7 +46,7 @@ class Timetable:
                 pre_days[day] = pre_days[self._days[day]]
         self._days = pre_days
 
-    def _parse_day(self, d, tasks):
+    def _parse_day(self, tasks):
         day_tasks = []
         tasks, amount = self._parse_tasks(tasks)
 
@@ -67,4 +68,13 @@ class Timetable:
 
         for i in range(7):
             curr_day = self._get_day_after_day(self.now, i)
-            self.timetable.append((curr_day, self._parse_day(curr_day, self._days[curr_day.strftime("%A")])))
+            self.timetable.append((curr_day, self._parse_day(self._days[curr_day.strftime("%A")])))
+
+    def __str__(self):
+        result = ""
+        for day in self.timetable:
+            result += (day[0].strftime("%A") + " " + day[0].strftime("%Y-%m-%d") + "\n")
+            for task in day[1]:
+                result += ("\t " + task[0] + " " + ("{:d}:{:02d}".format(task[1].hour, task[1].minute)) + " \n")
+
+        return result
