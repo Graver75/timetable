@@ -111,4 +111,4 @@ class Timetable:
         print("Current time: ", now)
         print("Current task: ", curr_task[0])
         print("Remaining time: ", next_task[1] - now)
-        print("Next task is " + next_task[0] + " at ",next_task[1])
+        print("Next task is " + next_task[0] + " at ", next_task[1].strftime("%H:%M:%S"))
