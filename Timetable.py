@@ -1,4 +1,4 @@
-import json
+import json, os
 from datetime import datetime, timedelta
 
 
@@ -78,7 +78,7 @@ class Timetable:
             curr_day = self._get_day_after_day(self.now, i)
             self.timetable.append((curr_day, self._parse_day(self._days[curr_day.strftime("%A")])))
 
-    def get_curr_day_task(self):
+    def _get_curr_day_task(self):
         now = datetime.now()
         result = None
         for day_task in self.timetable:
@@ -87,14 +87,28 @@ class Timetable:
                 result = day_task
         return result
 
-    def get_curr_task(self):
-        current_tasks = self.get_curr_day_task()[1]
+    def _get_around_tasks(self):
+        current_tasks = self._get_curr_day_task()[1]
         now = datetime.now()
-        result = None
+
+        curr_task = None
+        next_task = None
 
         for i in range(len(current_tasks) - 1):
             prev = current_tasks[i][1]
             curr = current_tasks[i + 1][1]
             if prev < now < curr:
-               result = current_tasks[i]
-        return result
+                curr_task = current_tasks[i]
+                next_task = current_tasks[i + 1]
+        return (curr_task, next_task)
+
+    def print_curr_task(self):
+        curr_task, next_task = self._get_around_tasks()
+
+        os.system('clear')
+        now = datetime.now()
+
+        print("Current time: ", now)
+        print("Current task: ", curr_task[0])
+        print("Remaining time: ", next_task[1] - now)
+        print("Next task is " + next_task[0] + " at ",next_task[1])

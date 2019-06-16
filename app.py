@@ -1,8 +1,11 @@
 from Timetable import Timetable
+import time
 
 
 
 timetable = Timetable('timetable.json')
-print(timetable)
-timetable.get_curr_day_task()
-timetable.get_curr_task()
+
+
+while True:
+    time.sleep(1)
+    timetable.print_curr_task()
